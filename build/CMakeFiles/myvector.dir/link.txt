@@ -1,0 +1,1 @@
+/usr/bin/cc -Wl,--dependency-file=CMakeFiles/myvector.dir/link.d CMakeFiles/myvector.dir/vulkan.c.o -o myvector  /usr/lib64/libvulkan.so /usr/lib64/libglfw.so.3.4

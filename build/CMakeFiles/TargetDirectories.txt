@@ -1,0 +1,3 @@
+/home/prashanth/Desktop/nebula/build/CMakeFiles/nebula.dir
+/home/prashanth/Desktop/nebula/build/CMakeFiles/edit_cache.dir
+/home/prashanth/Desktop/nebula/build/CMakeFiles/rebuild_cache.dir
