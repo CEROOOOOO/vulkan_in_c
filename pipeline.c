@@ -5,6 +5,7 @@
 #include "device.h"
 #include "renderpass.h"
 #include "present.h"
+#include "buffer.h"
 VkShaderModule vertex_shader_module;
 VkShaderModule fragment_shader_module;
 VkResult resultpipe;
@@ -15,7 +16,6 @@ VkResult resultpipe;
 		VkSpecializationInfo const* specializationinfo;
 	}ShaderStageParameters;
 VkPipelineShaderStageCreateInfo* shader_stage_create_infos = NULL;
-char* bufferfile = NULL;
  ShaderStageParameters* shader_stage_params = NULL;
 VkPipelineVertexInputStateCreateInfo vertex_input_state_create_info = {};
 VkPipelineInputAssemblyStateCreateInfo input_assembly_state_create_info = {};
@@ -25,13 +25,11 @@ VkPipelineMultisampleStateCreateInfo multisample_state_create_info = {};
 VkPipelineColorBlendStateCreateInfo color_blend_state_create_info = {};
 VkPipeline pipe;
 VkPipelineLayout pipe_layout;
-VkVertexInputBindingDescription binding_descriptions;
-VkVertexInputAttributeDescription attribute_descriptions;
 VkViewport viewports = {};
 VkRect2D scissor = {};
 VkPipelineColorBlendAttachmentState
 color_blend_attach;
-unsigned char* readSPIRV(const char* filename, size_t* out_size) {
+uint32_t* readSPIRV(const char* filename, size_t* out_size) {
     FILE* file = fopen(filename, "rb");
     if (!file) {
         printf("Failed to open SPIR-V file: %s\n", filename);
@@ -40,7 +38,7 @@ unsigned char* readSPIRV(const char* filename, size_t* out_size) {
     fseek(file, 0, SEEK_END);
 	size_t fileSize = ftell(file);//size of the whole file 
     rewind(file);//idk wtf 
-    bufferfile = (char*)malloc(fileSize);//assign some memory tho ii will free it dont worry 
+	uint32_t* bufferfile = malloc(fileSize);
     if (!bufferfile) {
         printf("Failed to allocate memory for SPIR-V file: %s\n", filename);
         fclose(file);
@@ -57,7 +55,12 @@ bool creatingshadermodule()//like this is the storage of shader means spirv is s
 	size_t vertex_code_size;
 	size_t fragment_code_size;
 	//std::vector <unsigned char> vertex_source_code = readSPIRV("vertx2.spv");//i dont think i need a array cause i have only one vert
-    void* vertex_source_code = readSPIRV("vertxxx.spv", &vertex_code_size);// i have not created anything though wait 
+	uint32_t* vertex_source_code = readSPIRV("vertex1.spv", &vertex_code_size);// i have not created anything though wait 
+if (!vertex_source_code) {
+    printf("failed to load vertex shader\n");
+    return false;
+}
+
 	VkShaderModuleCreateInfo vertex_shader_module_create_info = {};
 	vertex_shader_module_create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	vertex_shader_module_create_info.pNext = NULL;
@@ -70,7 +73,11 @@ bool creatingshadermodule()//like this is the storage of shader means spirv is s
 	printf("couldnt create shader module\n");
 	return false;
 	}
-	void* fragment_source_code = readSPIRV("fragxxx.spv", &fragment_code_size);
+	uint32_t* fragment_source_code = readSPIRV("fragment1.spv", &fragment_code_size);
+if (!fragment_source_code) {
+    printf("failed to load frag shader\n");
+    return false;
+}
 	VkShaderModuleCreateInfo fragment_shader_module_create_info = {};
 	fragment_shader_module_create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	fragment_shader_module_create_info.pNext = NULL;
@@ -107,21 +114,13 @@ bool specifyingpipelineshaderstages()//like in graphics shaders there are many s
 }
 bool vertexbinding()//like to specify from where to take vertex data
 {
-    binding_descriptions.binding = 0;
-    binding_descriptions.stride = 3 * sizeof(float); //  was 8, now 3
-    binding_descriptions.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-    attribute_descriptions.location = 0;
-    attribute_descriptions.binding = 0;
-    attribute_descriptions.format = VK_FORMAT_R32G32B32_SFLOAT;
-    attribute_descriptions.offset = 0;
-    \
 	vertex_input_state_create_info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
 	vertex_input_state_create_info.pNext = NULL;
 	vertex_input_state_create_info.flags = 0;
 	vertex_input_state_create_info.vertexBindingDescriptionCount = 1;
-	vertex_input_state_create_info.pVertexBindingDescriptions = &binding_descriptions;
-	vertex_input_state_create_info.vertexAttributeDescriptionCount = 1;
-	vertex_input_state_create_info.pVertexAttributeDescriptions = &attribute_descriptions;
+	vertex_input_state_create_info.pVertexBindingDescriptions = binding_descriptions;
+	vertex_input_state_create_info.vertexAttributeDescriptionCount = 2;
+	vertex_input_state_create_info.pVertexAttributeDescriptions = attribute_descriptions;
 	return true;
 }
 bool pipelineinputassemblystate() {

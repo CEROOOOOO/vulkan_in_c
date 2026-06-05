@@ -40,6 +40,7 @@ int main()
     if (allocatingandbindingmemory())printf("fuck you 21\n");
     if (stagingresources())printf("fuck you 22\n");
     if (copyingvertexbuffer())printf("fuck you 23\n");
+    if (bufferbinding())printf("fuck you 24.5\n");
     if (renderpassandframebuffer())printf("fuck you 24\n");
     if (creatingcommand())printf("fuck you 25\n");
     if (creatingshadermodule())printf("fuck you 26\n");

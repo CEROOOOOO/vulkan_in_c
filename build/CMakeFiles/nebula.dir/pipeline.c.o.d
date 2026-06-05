@@ -57,4 +57,4 @@ CMakeFiles/nebula.dir/pipeline.c.o: \
  /home/prashanth/Desktop/nebula/renderpass.h \
  /home/prashanth/Desktop/nebula/present.h /usr/include/GLFW/glfw3.h \
  /usr/include/GL/gl.h /usr/include/GL/glext.h \
- /usr/include/KHR/khrplatform.h
+ /usr/include/KHR/khrplatform.h /home/prashanth/Desktop/nebula/buffer.h

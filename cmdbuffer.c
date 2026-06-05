@@ -83,7 +83,8 @@ bool creatingcommand()
         printf("could'nt begin command buffer recording operation\n");
         return false;
     }
-    vkCmdCopyBuffer(staging_command_buffer, staging_buffer, staging_dst_buffer, 1, &copyregion); // copying done
+    vkCmdCopyBuffer(staging_command_buffer, staging_buffer, staging_dst_buffer, 1, &copyregion);       // copying done
+    vkCmdCopyBuffer(staging_command_buffer, index_staging_buffer, index_buffer, 1, &index_copyregion); //
     vkEndCommandBuffer(staging_command_buffer);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,8 +266,9 @@ bool renderloop()
         1,
         &staging_dst_buffer,
         offsets0);
+    vkCmdBindIndexBuffer(command_buffers[image_index], index_buffer, 0, VK_INDEX_TYPE_UINT32);
+    vkCmdDrawIndexed(command_buffers[image_index], 6, 1, 0, 0, 0);    
 
-    vkCmdDraw(command_buffers[image_index], 3, 1, 0, 0);
 
     vkCmdEndRenderPass(command_buffers[image_index]); // idk wtf i did but i will come back when debugging after writing shaders or adfter pipeluine then bye---------------------------------------------------------
     vkEndCommandBuffer(command_buffers[image_index]);

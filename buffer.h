@@ -47,5 +47,10 @@ extern VkDeviceSize offset;                       // memory region that should b
 extern VkDeviceSize data_size;                    // size of data to be packed from cpu to the memory object of gp
 extern VkBufferCopy copyregion;
 bool copyingvertexbuffer();
-
-bool freeingcmd();
+extern VkBuffer index_buffer;
+extern VkBuffer index_staging_buffer;
+extern VkBufferCopy index_copyregion;
+extern VkVertexInputBindingDescription* binding_descriptions;
+extern VkVertexInputAttributeDescription* attribute_descriptions;
+bool bufferbinding();
+bool freeingcmd(); 

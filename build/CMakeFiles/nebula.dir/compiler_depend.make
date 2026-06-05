@@ -405,6 +405,7 @@ CMakeFiles/nebula.dir/main.c.o: /home/prashanth/Desktop/nebula/main.c \
   /usr/lib/gcc/x86_64-redhat-linux/16/include/stdint.h
 
 CMakeFiles/nebula.dir/pipeline.c.o: /home/prashanth/Desktop/nebula/pipeline.c \
+  /home/prashanth/Desktop/nebula/buffer.h \
   /home/prashanth/Desktop/nebula/device.h \
   /home/prashanth/Desktop/nebula/present.h \
   /home/prashanth/Desktop/nebula/renderpass.h \
